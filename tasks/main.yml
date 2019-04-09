@@ -1,0 +1,20 @@
+---
+- name: Include OS-specific variables.
+  include_vars: "{{ ansible_os_family }}.yml"
+
+- name: Install Samba.
+  package:
+    name: samba
+    state: present
+
+- name: Copy smb.conf Samba configuration.
+  template:
+    src: smb.conf.j2
+    dest: /etc/samba/smb.conf
+  notify: restart samba
+
+- name: Enable and start Samba service.
+  service:
+    name: "{{ samba_service }}"
+    enabled: yes
+    state: started

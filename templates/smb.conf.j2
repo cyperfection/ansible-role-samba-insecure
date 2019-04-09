@@ -1,0 +1,92 @@
+# {{ ansible_managed }}
+
+[global]
+
+	workgroup = {{ samba_workgroup }}
+	server string = insecure shares on {{ samba_server_string|default(inventory_hostname) }}
+
+	max log size = 50
+
+	security = user
+	share modes = yes
+	guest account = root
+	map to guest = bad user
+
+	disable netbios = yes
+	min protocol = SMB2
+	smb ports = 445
+
+	domain master = no
+	domain logons = no
+
+	local master = no
+	preferred master = no
+
+	wins support = no
+
+	load printers = no
+	printcap name = /dev/null
+
+	# default modes and masks
+	#  http://blog.jonaspasche.com/2010/11/24/endlich-verstehen-samba-rechtevergabe/
+	create mask = 0644
+	force create mode = 0644
+	directory mask = 0755
+	force directory mode = 0755
+
+[system]
+	path = /
+	comment = INSECURE !!! complete system filesystem as user root
+	guest ok = yes
+	read only = no
+	force_user = root
+	force_group = root
+
+{% for item in samba_shares|default([]) %}
+[{{ item.name }}]
+	path = {{ item.path }}
+{% if item.comment is defined and item.comment != '' %}
+	comment = {{ item.comment }}
+{% endif %}
+{% if item.write_list is defined and item.write_list != '' %}
+	write list = {{ item.write_list }}
+	writeable = yes
+{% endif %}
+{% if item.guest_ok is defined and item.guest_ok != '' %}
+  guest ok = {{ item.guest_ok }}
+{% endif %}
+{% if item.read_only is defined and item.read_only != '' %}
+  read only = {{ item.read_only }}
+{% endif %}
+{% if item.force_user is defined and item.force_user != '' %}
+  force user = {{ item.force_user }}
+{% endif %}
+{% if item.force_group is defined and item.force_group != '' %}
+  force group = {{ item.force_group }}
+{% endif %}
+{% if item.create_mask is defined and item.create_mask != '' %}
+  create mask = {{ item.create_mask }}
+{% endif %}
+{% if item.force_create_mode is defined and item.force_create_mode != '' %}
+  force create mode = {{ item.force_create_mode }}
+{% endif %}
+{% if item.directory_mask is defined and item.directory_mask != '' %}
+	directory mask = {{ item.directory_mask }}
+{% endif %}
+{% if item.force_directory_mode is defined and item.force_directory_mode != '' %}
+	force directory mode = {{ item.force_directory_mode }}
+{% endif %}
+{% if item.security_mask is defined and item.security_mask != '' %}
+	security mask = {{ item.security_mask }}
+{% endif %}
+{% if item.force_security_mode is defined and item.force_security_mode != '' %}
+	force security mode = {{ item.force_security_mode }}
+{% endif %}
+{% if item.directory_security_mask is defined and item.directory_security_mask != '' %}
+	directory security mask = {{ item.directory_security_mask }}
+{% endif %}
+{% if item.force_directory_security_mode is defined and item.force_directory_security_mode != '' %}
+	force directory security mode = {{ item.force_directory_security_mode }}
+{% endif %}
+
+{% endfor %}
