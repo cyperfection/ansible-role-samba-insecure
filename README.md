@@ -1,9 +1,9 @@
 # Ansible Role: Samba insecure
 
-*DO NOT USE THIS ROLE!!! IT'S VERY UNSECURE!!!*
+*DO NOT USE THIS ROLE!!! IT'S VERY INSECURE!!!*
 Use only if you know what you are doing!
 
-An Ansible Role that installs a Samba service in a very unsecure way!
+An Ansible Role that installs a Samba service in a very insecure way!
 
     security = user
     share modes = yes
@@ -12,7 +12,7 @@ An Ansible Role that installs a Samba service in a very unsecure way!
 
 ## Default share
 
-The complete root filesystem will be shared (share name: system) writeable as root for guests! Very unsecure!!!
+The complete root filesystem will be shared (share name: system) writeable as root for guests! Very insecure!!!
 
 ## Configure shares
 
