@@ -3,6 +3,7 @@ dependencies: []
 
 galaxy_info:
   author: Pascal Pilz
+  role_name: samba_insecure
   description: Setup Samba server insecure for RHEL/CentOS and Debian/Ubuntu.
   company: "cyperfection GmbH"
   license: CC-BY
